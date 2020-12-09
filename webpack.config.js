@@ -10,9 +10,9 @@ const isLoaders = () =>{
         {
             loader: 'babel-loader',
             options: {
-                presets: ['@babel/preset-env']
-            }
-        }
+                presets: ['@babel/preset-env'],
+            },
+        },
     ]
     if (isDev) {
         loaders.push('eslint-loader')
@@ -34,29 +34,29 @@ module.exports = {
     resolve: {
         extensions: ['.js'],
         alias: {
-            '@':path.resolve(__dirname, 'src'),
-            '@core':path.resolve(__dirname, 'src/core')
+            '@': path.resolve(__dirname, 'src'),
+            '@core': path.resolve(__dirname, 'src/core')
         }
     },
-    devtool: isDev ? 'sourse-map' : false,
+    devtool: isDev ? 'source-map' : false,
     devServer: {
-        port:3000,
+        port: 3000,
         hot: isDev
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HTMLWebpackPlugin({
-            template: "index.html",
+            template: 'index.html',
             minify: {
-                removeCommens:isProd,
-                collapseWhitespase:isProd
-            }
+                removeCommens: isProd,
+                collapseWhitespase: isProd,
+            },
         }),
         new CopyPlugin({
             patterns: [{
                 from: path.resolve(__dirname, 'src/favicon.ico'),
-                to: path.resolve(__dirname, 'dist')
-            }]
+                to: path.resolve(__dirname, 'dist'),
+            }],
         }),
         new MiniCssExtractPlugin({
             filename: filename('css')
