@@ -3,11 +3,27 @@ const CODES = {
     Z: 90
 }
 
- function toCell(_, index) {
-    return `
-    <div class="cell" contenteditable data-col="${index}"></div>
-    `
- }
+// function toCell(row, index) {
+//    return `
+//    <div class="cell"
+//    contenteditable
+// data-col="${index}"
+//    data-row="${row}"></div>
+//    `
+// }
+function toCell(row) {
+    return function(_, col) {
+        return `
+            <div
+                class="cell"
+                contenteditable
+                data-col="${col}"
+                data-type="cell"
+                data-id="${row}:${col}"
+            ></div>
+        `
+    }
+}
 
 function toColumn(col, index) {
     return `
@@ -46,58 +62,16 @@ export function createTable(rowCount = 15) {
 
     rows.push(createRow(null, cols))
 
-    for (let i = 0; i < rowCount; i++) {
+    for (let row = 0; row < rowCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map(toCell)
+            // .map((_, col) => toCell(row, col))
+            .map(toCell(row))
             .join('')
-        rows.push(createRow(i + 1, cells))
+        rows.push(createRow(row + 1, cells))
     }
 
     return rows.join('')
 }
 
-
-// const CODES = {
-//    A: 65,
-//    Z: 90
-// }
-// function createCell() {
-//    return `
-//    <div class="cell" contenteditable>b2</div>
-//    `
-// }
-// function createCol(col) {
-//    return `
-//    <div class="column">${col}</div>
-//    `
-// }
-// function createRow(content) {
-//    return `
-//       <div class="row">
-//            <div class="row-info"></div>
-//            <div class="row-data">${content}</div>
-//        </div>
-// `
-// }
-//
-// export function createTable(rowCount = 15) {
-//    const colsCount = CODES.Z - CODES.A + 1
-//    const rows = []
-//    const cols = new Array(colsCount)
-//        .fill('')
-//        .map((el, index) =>{
-//            return String.fromCharCode(CODES.A + index)
-//        })
-//        .map(el => {
-//            return createCol(el)
-//        })
-//        .join('')
-
-//    rows.push(createRow())
-//    for (let i = 0; i < rowCount; i++){
-//        rows.push(createRow())
-//    }
-//    return rows.join('')
-// }
 
