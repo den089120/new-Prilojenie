@@ -1,25 +1,37 @@
 import {ExcelComponent} from '@/assets/core/ExcelComponent';
+import {$} from '@/assets/core/dom'
+import {changeTitle} from '@/redux/actions';
+import {defaultTitle} from '@/constants';
+import {debounce} from '@/assets/core/utils';
 
 export class Header extends ExcelComponent {
     static className = 'excel__header'
     constructor($root, options) {
         super($root, {
             name: 'Header',
+            listeners: ['input'],
             ...options
         })
     }
+    prepare() {
+        this.onInput = debounce(this.onInput, 300)
+    }
+
     toHTML() {
-        return '' +
-            '<input class="input" type="text" value="Новая таблица"/>\n' +
-            '\n' +
-            '            <div>\n' +
-            '\n' +
-            '                <div class="button">\n' +
-            '                    <i class="material-icons">delete</i>\n' +
-            '                </div>\n' +
-            '                <div class="button">\n' +
-            '                    <i class="material-icons">exit_to_app</i>\n' +
-            '                </div>\n' +
-            '            </div>';
+        const title = this.store.getState().title || defaultTitle
+        return `
+            <input class="input" type="text" value="${title}"/>
+            <div>
+               <div class="button">
+                  <i class="material-icons">delete</i>
+               </div>
+               <div class="button">
+                  <i class="material-icons">exit_to_app</i>
+               </div>
+            </div>`
+    }
+    onInput(event) {
+        const $target = $(event.target)
+        this.$dispatch(changeTitle($target.$el.value))
     }
 }
