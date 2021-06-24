@@ -7,15 +7,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
 const isLoaders = () =>{
-    const loaders = [
-        {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-env'],
-                plugins: ['@babel/plugin-proposal-class-properties'],
-            },
-        },
-    ]
+    const loaders = ['babel-loader']
+
     if (isDev) {
         loaders.push('eslint-loader')
     }
